@@ -56,7 +56,7 @@ public class UserInterface {
 	private void initialize() {		
 		frmScout = new JFrame();
 		frmScout.setResizable(false);
-		frmScout.setIconImage(Toolkit.getDefaultToolkit().getImage(UserInterface.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
+		frmScout.setIconImage(Toolkit.getDefaultToolkit().getImage(UserInterface.class.getResource("/ui/nte.gif")));
 		frmScout.setTitle("Scout");
 		frmScout.getContentPane().setBackground(Color.WHITE);
 		frmScout.setBounds(100, 100, 315, 357);
