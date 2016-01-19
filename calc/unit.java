@@ -11,6 +11,7 @@ public class unit {
 	public double upkeep;
 	public double power;
 	public String name;
+	public int count;
 	
 	public unit(int level, int casLevel, int attack, int defense, int hp, int speed, double load, int range, double upkeep, double power) {
 		this.level = level;
@@ -25,6 +26,14 @@ public class unit {
 		this.power = power;
 	}
 	
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	public String getName() {
 		return name;
 	}

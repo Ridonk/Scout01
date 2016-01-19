@@ -259,17 +259,13 @@ public class UserInterface {
 			// Militia, Shortbowman, rider, Bricole
 			double quartPow = troopPow / 4;
 			int troopLevel = 1;
-			double troopCountMilitia = quartPow / unitDB.Militia.getPower();
-			double troopCountShortbowman = quartPow / unitDB.Shortbowman.getPower();
-			double troopCountRider = quartPow / unitDB.Rider.getPower();
-			double troopCountBricole = quartPow / unitDB.Bricole.getPower();
-			double troopCalc = (troopCountMilitia + troopCountShortbowman + troopCountRider + troopCountBricole);
-			int totalTroops = (int)troopCalc;
+			unitDB.Militia.setCount((int)(quartPow / unitDB.Militia.getPower()));
+			unitDB.Shortbowman.setCount((int)(quartPow / unitDB.Shortbowman.getPower()));
+			unitDB.Rider.setCount((int)(quartPow / unitDB.Rider.getPower()));
+			unitDB.Bricole.setCount((int)(quartPow / unitDB.Bricole.getPower()));
+			int totalTroops = unitDB.Militia.getCount() + unitDB.Shortbowman.getCount() + unitDB.Rider.getCount() + unitDB.Bricole.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ (int)troopCountMilitia + " Level " + troopLevel + " " + unitDB.Militia.getName()  + " \n" + (int)troopCountShortbowman + " Level " + troopLevel +  " " + unitDB.Shortbowman.getName() + " \n"
-					+ (int)troopCountRider + " Level " + troopLevel +  " " + unitDB.Rider.getName() + " \n" + (int)troopCountBricole + " Level " + troopLevel + " " + unitDB.Bricole.getName() + " \n");
+			printTroops(unitDB.Militia, unitDB.Shortbowman, unitDB.Rider, unitDB.Bricole, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 6) {
@@ -277,17 +273,13 @@ public class UserInterface {
 			// Infantry, Longbowman, Light Cavalry, Assault Cart
 			double quartPow = troopPow / 4;
 			int troopLevel = 2;
-			double troopCountInfantry = quartPow / unitDB.Infantry.getPower();
-			double troopCountLongbowman = quartPow / unitDB.Longbowman.getPower();
-			double troopCountLightCavalry = quartPow / unitDB.LightCavalry.getPower();
-			double troopCountAssaultCart = quartPow / unitDB.AssaultCart.getPower();
-			double troopCalc = (troopCountInfantry + troopCountLongbowman + troopCountLightCavalry + troopCountAssaultCart);
-			int totalTroops = (int)troopCalc;
+			unitDB.Infantry.setCount((int)(quartPow / unitDB.Infantry.getPower()));
+			unitDB.Longbowman.setCount((int)(quartPow / unitDB.Longbowman.getPower()));
+			unitDB.LightCavalry.setCount((int)(quartPow / unitDB.LightCavalry.getPower()));
+			unitDB.AssaultCart.setCount((int)(quartPow / unitDB.AssaultCart.getPower()));
+			int totalTroops = unitDB.Infantry.getCount() + unitDB.Longbowman.getCount() + unitDB.LightCavalry.getCount() + unitDB.AssaultCart.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.Infantry.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.Longbowman.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.LightCavalry.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.AssaultCart.getName() + " \n");
+			printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 9) {
@@ -295,17 +287,13 @@ public class UserInterface {
 			// Spearman, Crossbowman, Heavy Cavalry, Mangonel
 			double quartPow = troopPow / 4;
 			int troopLevel = 3;
-			double troopCountSpearman = quartPow / unitDB.Spearman.getPower();
-			double troopCountCrossbowman = quartPow / unitDB.Crossbowman.getPower();
-			double troopCountHeavyCavalry = quartPow / unitDB.HeavyCavalry.getPower();
-			double troopCountMangonel = quartPow / unitDB.Mangonel.getPower();
-			double troopCalc = (troopCountSpearman + troopCountCrossbowman + troopCountHeavyCavalry + troopCountMangonel);
-			int totalTroops = (int)troopCalc;
+			unitDB.Spearman.setCount((int)(quartPow / unitDB.Spearman.getPower()));
+			unitDB.Crossbowman.setCount((int)(quartPow / unitDB.Crossbowman.getPower()));
+			unitDB.HeavyCavalry.setCount((int)(quartPow / unitDB.HeavyCavalry.getPower()));
+			unitDB.Mangonel.setCount((int)(quartPow / unitDB.Mangonel.getPower()));
+			int totalTroops = unitDB.Spearman.getCount() + unitDB.Crossbowman.getCount() + unitDB.HeavyCavalry.getCount() + unitDB.Mangonel.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " \n" + unitDB.Spearman.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.Crossbowman.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " \n" + unitDB.HeavyCavalry.getName() + " " + totalTroops + " Level " + troopLevel + " " + unitDB.Mangonel.getName() + " \n");	
+			printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);	
 		}
 		
 		else if (masterScout.castleLevel <= 12) {
@@ -313,17 +301,13 @@ public class UserInterface {
 			// Swordsman, Arbalester, Mounted Archer, Battering Ram
 			double quartPow = troopPow / 4;
 			int troopLevel = 4;
-			double troopCountSwordsman = quartPow / unitDB.Swordsman.getPower();
-			double troopCountArbalester = quartPow / unitDB.Arbalester.getPower();
-			double troopCountMountedArcher = quartPow / unitDB.MountedArcher.getPower();
-			double troopCountBatteringRam = quartPow / unitDB.BatteringRam.getPower();
-			double troopCalc = (troopCountSwordsman + troopCountArbalester + troopCountMountedArcher + troopCountBatteringRam);
-			int totalTroops = (int)troopCalc;
+			unitDB.Swordsman.setCount((int)(quartPow / unitDB.Swordsman.getPower()));
+			unitDB.Arbalester.setCount((int)(quartPow / unitDB.Arbalester.getPower()));
+			unitDB.MountedArcher.setCount((int)(quartPow / unitDB.MountedArcher.getPower()));
+			unitDB.BatteringRam.setCount((int)(quartPow / unitDB.BatteringRam.getPower()));
+			int totalTroops = unitDB.Spearman.getCount() + unitDB.Arbalester.getCount() + unitDB.MountedArcher.getCount() + unitDB.BatteringRam.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.Swordsman.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.Arbalester.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.MountedArcher.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.BatteringRam.getName() + " \n");
+			printTroops(unitDB.Swordsman, unitDB.Arbalester, unitDB.MountedArcher, unitDB.BatteringRam, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 15) {
@@ -331,17 +315,13 @@ public class UserInterface {
 			// Pikeman, Elite Longbowman, Cavalry Shooter, Heavy Mangonel
 			double quartPow = troopPow / 4;
 			int troopLevel = 5;
-			double troopCountPikeman = quartPow / unitDB.Pikeman.getPower();
-			double troopCountEliteLongbowman = quartPow / unitDB.EliteLongbowman.getPower();
-			double troopCountCavalryShooter = quartPow / unitDB.CavalryShooter.getPower();
-			double troopCountHeavyMangonel = quartPow / unitDB.HeavyMangonel.getPower();
-			double troopCalc = (troopCountPikeman + troopCountEliteLongbowman + troopCountCavalryShooter + troopCountHeavyMangonel);
-			int totalTroops = (int)troopCalc;
+			unitDB.Pikeman.setCount((int)(quartPow / unitDB.Pikeman.getPower()));
+			unitDB.EliteLongbowman.setCount((int)(quartPow / unitDB.EliteLongbowman.getPower()));
+			unitDB.CavalryShooter.setCount((int)(quartPow / unitDB.CavalryShooter.getPower()));
+			unitDB.HeavyMangonel.setCount((int)(quartPow / unitDB.HeavyMangonel.getPower()));
+			int totalTroops = unitDB.Pikeman.getCount() + unitDB.EliteLongbowman.getCount() + unitDB.CavalryShooter.getCount() + unitDB.HeavyMangonel.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.Pikeman.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.EliteLongbowman.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.CavalryShooter.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.HeavyMangonel.getName() + " \n");
+			printTroops(unitDB.Pikeman, unitDB.EliteLongbowman, unitDB.CavalryShooter, unitDB.HeavyMangonel, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 18) {
@@ -349,17 +329,13 @@ public class UserInterface {
 			// Noble Swordsman, Archer Guard, Knights Templar, Demolisher
 			double quartPow = troopPow / 4;
 			int troopLevel = 6;
-			double troopCountNobleSwordsman = quartPow / unitDB.NobleSwordsman.getPower();
-			double troopCountArcherGuard = quartPow / unitDB.ArcherGuard.getPower();
-			double troopCountKnightsTemplar = quartPow / unitDB.KnightsTemplar.getPower();
-			double troopCountDemolisher = quartPow / unitDB.Demolisher.getPower();
-			double troopCalc = (troopCountNobleSwordsman + troopCountArcherGuard + troopCountKnightsTemplar + troopCountDemolisher);
-			int totalTroops = (int)troopCalc;
+			unitDB.NobleSwordsman.setCount((int)(quartPow / unitDB.NobleSwordsman.getPower()));
+			unitDB.ArcherGuard.setCount((int)(quartPow / unitDB.ArcherGuard.getPower()));
+			unitDB.KnightsTemplar.setCount((int)(quartPow / unitDB.KnightsTemplar.getPower()));
+			unitDB.Demolisher.setCount((int)(quartPow / unitDB.Demolisher.getPower()));
+			int totalTroops = unitDB.NobleSwordsman.getCount() + unitDB.ArcherGuard.getCount() + unitDB.KnightsTemplar.getCount() + unitDB.Demolisher.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.NobleSwordsman.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.ArcherGuard.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.KnightsTemplar.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.Demolisher.getName() + " \n");
+			printTroops(unitDB.NobleSwordsman, unitDB.ArcherGuard, unitDB.KnightsTemplar, unitDB.Demolisher, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 21) {
@@ -367,17 +343,13 @@ public class UserInterface {
 			// Guard, Heavy Crossbowman, Heavy Cavalry Archer, Trebuchet
 			double quartPow = troopPow / 4;
 			int troopLevel = 7;
-			double troopCountGuard = quartPow / unitDB.Guard.getPower();
-			double troopCountHeavyCrossbowman = quartPow / unitDB.HeavyCrossbowman.getPower();
-			double troopCountHeavyCArcher = quartPow / unitDB.HeavyCArcher.getPower();
-			double troopCountTrebuchet = quartPow / unitDB.Trebuchet.getPower();
-			double troopCalc = (troopCountGuard + troopCountHeavyCrossbowman + troopCountHeavyCArcher + troopCountTrebuchet);
-			int totalTroops = (int)troopCalc;
+			unitDB.Guard.setCount((int)(quartPow / unitDB.Guard.getPower()));
+			unitDB.HeavyCrossbowman.setCount((int)(quartPow / unitDB.HeavyCrossbowman.getPower()));
+			unitDB.HeavyCArcher.setCount((int)(quartPow / unitDB.HeavyCArcher.getPower()));
+			unitDB.Trebuchet.setCount((int)(quartPow / unitDB.Trebuchet.getPower()));
+			int totalTroops = unitDB.Guard.getCount() + unitDB.HeavyCrossbowman.getCount() + unitDB.HeavyCArcher.getCount() + unitDB.Trebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.Guard.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.HeavyCrossbowman.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.HeavyCArcher.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.Trebuchet.getName() + " \n");
+			printTroops(unitDB.Guard, unitDB.HeavyCrossbowman, unitDB.HeavyCArcher, unitDB.Trebuchet, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 25) {
@@ -385,17 +357,13 @@ public class UserInterface {
 			// Heavy Pikeman, Eagle Archer, Royal Knight, Heavy Trebuchet
 			double quartPow = troopPow / 4;
 			int troopLevel = 8;
-			double troopCountHeavyPikeman = quartPow / unitDB.HeavyPikeman.getPower();
-			double troopCountEagleArcher = quartPow / unitDB.EagleArcher.getPower();
-			double troopCountRoyalKnight = quartPow / unitDB.RoyalKnight.getPower();
-			double troopCountHeavyTrebuchet = quartPow / unitDB.HeavyTrebuchet.getPower();
-			double troopCalc = (troopCountHeavyPikeman + troopCountEagleArcher + troopCountRoyalKnight + troopCountHeavyTrebuchet);
-			int totalTroops = (int)troopCalc;
+			unitDB.HeavyPikeman.setCount((int)(quartPow / unitDB.HeavyPikeman.getPower()));
+			unitDB.EagleArcher.setCount((int)(quartPow / unitDB.EagleArcher.getPower()));
+			unitDB.RoyalKnight.setCount((int)(quartPow / unitDB.RoyalKnight.getPower()));
+			unitDB.HeavyTrebuchet.setCount((int)(quartPow / unitDB.HeavyTrebuchet.getPower()));
+			int totalTroops = unitDB.HeavyPikeman.getCount() + unitDB.EagleArcher.getCount() + unitDB.RoyalKnight.getCount() + unitDB.HeavyTrebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.HeavyPikeman.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.EagleArcher.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.RoyalKnight.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.HeavyTrebuchet.getName() + " \n");
+			printTroops(unitDB.HeavyPikeman, unitDB.EagleArcher, unitDB.RoyalKnight, unitDB.HeavyTrebuchet, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 29) {
@@ -403,17 +371,13 @@ public class UserInterface {
 			// Halberdier, Windlassman, Strike Archer, Siege Tower
 			double quartPow = troopPow / 4;
 			int troopLevel = 9;
-			double troopCountHalberdier = quartPow / unitDB.Halberdier.getPower();
-			double troopCountWindlassman = quartPow / unitDB.Windlassman.getPower();
-			double troopCountStrikeArcher = quartPow / unitDB.StrikeArcher.getPower();
-			double troopCountSiegeTower = quartPow / unitDB.SiegeTower.getPower();
-			double troopCalc = (troopCountHalberdier + troopCountWindlassman + troopCountStrikeArcher + troopCountSiegeTower);
-			int totalTroops = (int)troopCalc;
+			unitDB.Halberdier.setCount((int)(quartPow / unitDB.Halberdier.getPower()));
+			unitDB.Windlassman.setCount((int)(quartPow / unitDB.Windlassman.getPower()));
+			unitDB.StrikeArcher.setCount((int)(quartPow / unitDB.StrikeArcher.getPower()));
+			unitDB.SiegeTower.setCount((int)(quartPow / unitDB.SiegeTower.getPower()));
+			int totalTroops = unitDB.Halberdier.getCount() + unitDB.EagleArcher.getCount() + unitDB.RoyalKnight.getCount() + unitDB.HeavyTrebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.Halberdier.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.Windlassman.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.StrikeArcher.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.SiegeTower.getName() + " \n");
+			printTroops(unitDB.Halberdier, unitDB.Windlassman, unitDB.StrikeArcher, unitDB.SiegeTower, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
 		
 		else if (masterScout.castleLevel <= 30) {
@@ -421,18 +385,23 @@ public class UserInterface {
 			// Berserker, Marksman, Divine Knight, Mighty Trebuchet
 			double quartPow = troopPow / 4;
 			int troopLevel = 10;
-			double troopCountBerserker = quartPow / unitDB.Berserker.getPower();
-			double troopCountMarksman = quartPow / unitDB.Marksman.getPower();
-			double troopCountDivineKnight = quartPow / unitDB.DivineKnight.getPower();
-			double troopCountMightyTrebuchet = quartPow / unitDB.MightyTrebuchet.getPower();
-			double troopCalc = (troopCountBerserker + troopCountMarksman + troopCountDivineKnight + troopCountMightyTrebuchet);
-			int totalTroops = (int)troopCalc;
+			unitDB.Berserker.setCount((int)(quartPow / unitDB.Berserker.getPower()));
+			unitDB.Marksman.setCount((int)(quartPow / unitDB.Marksman.getPower()));
+			unitDB.DivineKnight.setCount((int)(quartPow / unitDB.DivineKnight.getPower()));
+			unitDB.MightyTrebuchet.setCount((int)(quartPow / unitDB.MightyTrebuchet.getPower()));
+			int totalTroops = unitDB.Berserker.getCount() + unitDB.Marksman.getCount() + unitDB.DivineKnight.getCount() + unitDB.MightyTrebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			lordTroopBreakdown.setText("The lord's estimated troop power is " + (int)masterScout.getTroopPow(masterScout) + "\n\n"
-					+ "The lord should have an estimated total of " + totalTroops + " troops at their disposal.\n\n"
-					+ totalTroops + " Level " + troopLevel + " " + unitDB.Berserker.getName()  + " \n" + totalTroops + " Level " + troopLevel +  " " + unitDB.Marksman.getName() + " \n"
-					+ totalTroops + " Level " + troopLevel +  " " + unitDB.DivineKnight.getName() + " \n" + totalTroops + " Level " + troopLevel + " " + unitDB.MightyTrebuchet.getName() + " \n");
+			printTroops(unitDB.Berserker, unitDB.Marksman, unitDB.DivineKnight, unitDB.MightyTrebuchet, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
 		}
+		
+	}
+	
+	private void printTroops(unit one, unit two, unit three, unit four, int troopLevel, int maxTroopCount, int troopPow, JTextPane lordTroopBreakdown) {
+		
+		lordTroopBreakdown.setText("The lord's estimated troop power is " + troopPow + "\n\n"
+				+ "The lord should have an estimated total of " + maxTroopCount + " troops at their disposal.\n\n"
+				+ one.count + " Level " + troopLevel + " " + one.getName()  + " \n" + two.count + " Level " + troopLevel +  " " + two.getName() + " \n"
+				+ three.count + " Level " + troopLevel +  " " + three.getName() + " \n" + four.count + " Level " + troopLevel + " " + four.getName() + " \n");
 		
 	}
 }
