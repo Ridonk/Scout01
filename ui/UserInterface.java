@@ -17,6 +17,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
 
+import calc.Scout;
+import calc.unit;
+import calc.unitDB;
+
 public class UserInterface {
 
 	private JFrame frmScout;
