@@ -10,6 +10,7 @@ public class unit {
 	public int range;
 	public double upkeep;
 	public double power;
+	public String name;
 	
 	public unit(int level, int casLevel, int attack, int defense, int hp, int speed, double load, int range, double upkeep, double power) {
 		this.level = level;
@@ -24,6 +25,14 @@ public class unit {
 		this.power = power;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public int getLevel() {
 		return level;
 	}

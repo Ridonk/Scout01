@@ -2,7 +2,7 @@ package calc;
 
 public class unitDB {
 	
-	// Create Infantry Units
+	// Define melee soldiers
 	public unit Militia;
 	public unit Infantry;
 	public unit Spearman;
@@ -14,7 +14,7 @@ public class unitDB {
 	public unit Halberdier;
 	public unit Berserker;
 	
-	// Create archer units
+	// Define arrow soldiers
 	public unit Shortbowman;
 	public unit Longbowman;
 	public unit Crossbowman;
@@ -26,7 +26,7 @@ public class unitDB {
 	public unit Windlassman;
 	public unit Marksman;
 	
-	// Create cavalry units
+	// Define cavalry soldiers
 	public unit Rider;
 	public unit LightCavalry;
 	public unit HeavyCavalry;
@@ -38,7 +38,7 @@ public class unitDB {
 	public unit StrikeArcher;
 	public unit DivineKnight;
 	
-	// Create siege units
+	// Define siege units (chariots)
 	public unit Bricole;
 	public unit AssaultCart;
 	public unit Mangonel;
