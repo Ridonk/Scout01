@@ -16,7 +16,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SpringLayout;
-
 import calc.Scout;
 import calc.unit;
 import calc.unitDB;
@@ -26,6 +25,8 @@ public class UserInterface {
 	private JFrame frmScout;
 	private JTextField lordPower;
 	private JTextField lordCastleLevel;
+	protected double version = 0.05;
+	protected int build = 1;
 
 	/**
 	 * Launch the application.
@@ -145,8 +146,8 @@ public class UserInterface {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frmScout, ""
 						+ "Scout is a program written by George Dunbar (AKA Ridonk in Kingdom 850)\n"
-						+ "Version: 0.03 - Build 1\n"
-						+ "Build date: Jan 17 2016\n"
+						+ "Version: " + version + "Build: " + build +"\n"
+						+ "Build date: Jan 20 2016\n"
 						+ "Scout is open source. If used for any applications credit must be given.\n"
 						+ "Released under GNU General Public License, V3");
 			}
