@@ -25,7 +25,7 @@ public class UserInterface {
 	private JFrame frmScout;
 	private JTextField lordPower;
 	private JTextField lordCastleLevel;
-	protected double version = 0.05;
+	protected double version = 0.06;
 	protected int build = 1;
 
 	/**
@@ -173,7 +173,7 @@ public class UserInterface {
 				JOptionPane.showMessageDialog(frmScout, ""
 						+ "Scout is a program written by George Dunbar (AKA Ridonk in Kingdom 850)\n"
 						+ "Version: " + version + "Build: " + build +"\n"
-						+ "Build date: Jan 20 2016\n"
+						+ "Build date: Jan 22 2016\n"
 						+ "Scout is open source. If used for any applications credit must be given.\n"
 						+ "Released under GNU General Public License, V3");
 			}
