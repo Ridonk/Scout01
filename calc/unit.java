@@ -26,6 +26,10 @@ public class unit {
 		this.power = power;
 	}
 	
+	public unit() {
+		
+	}
+	
 	public int getCount() {
 		return count;
 	}

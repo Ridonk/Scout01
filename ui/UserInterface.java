@@ -26,8 +26,8 @@ public class UserInterface {
 	private JFrame resultsFrame;
 	private JTextField lordPower;
 	private JTextField lordCastleLevel;
-	protected double version = 0.06;
-	protected int build = 1;
+	protected double version = 0.07;
+	protected int build = 2;
 
 	/**
 	 * Launch the application.
@@ -58,14 +58,16 @@ public class UserInterface {
 	private void initialize() {
 		frmScout = new JFrame();
 		frmScout.setVisible(true);
+		Color background = new Color(255, 255, 255); // White
+		Color foreground = new Color(30, 144, 255); // Dodger Blue
 		resultsFrame = new JFrame();
 		resultsFrame.setVisible(true);
 		resultsFrame.setBounds(100, 100, 360, 380);
 		resultsFrame.setLocationRelativeTo(null);
 		resultsFrame.setResizable(false);
+		resultsFrame.setBackground(background);
+		resultsFrame.setForeground(foreground);
 		ResultsWindow resultsWinbox = new ResultsWindow(resultsFrame);
-		Color background = new Color(255, 255, 255);
-		Color foreground = new Color(30, 144, 255);
 		Color backgroundTextField = new Color(204,255,255);
 		frmScout.setForeground(foreground);
 		frmScout.getContentPane().setForeground(foreground);
@@ -117,6 +119,7 @@ public class UserInterface {
 		
 		JButton btnCalculate = new JButton("Calculate");
 		springLayout.putConstraint(SpringLayout.SOUTH, btnCalculate, -15, SpringLayout.SOUTH, frmScout.getContentPane());
+		btnCalculate.setBackground(background);
 		btnCalculate.setForeground(foreground);
 		springLayout.putConstraint(SpringLayout.WEST, btnCalculate, 190, SpringLayout.WEST, frmScout.getContentPane());
 		springLayout.putConstraint(SpringLayout.NORTH, btnCalculate, 5, SpringLayout.SOUTH, lordCastleLevel);
@@ -280,20 +283,36 @@ public class UserInterface {
 	
 	private void breakdownUnits(unitDB unitDB, Scout masterScout, ResultsWindow resultsWinbox) {
 		
-		double troopPow = masterScout.getOverPow() * Scout.troopPerc;
-		
+		double maxTroopPow = masterScout.getOverPow() * Scout.troopPerc;
+		double gatherPerc = 0.026;
+		// Calculate estimated gathering troops (usually Bricoles or Assault Carts, assuming Bricoles as they're more efficient)
+		double gatherTroop = ((maxTroopPow * gatherPerc) / unitDB.Bricole.getPower());
+		double troopPow = (maxTroopPow - (unitDB.Bricole.getPower() * gatherTroop));
+		double quartPow = (troopPow * 1.1) / 4;
+		unit unitArr[] = new unit[8];
 		if (masterScout.castleLevel <= 3) {
 			
-			// Militia, Shortbowman, rider, Bricole
-			double quartPow = troopPow / 4;
+			// What are they?
 			int troopLevel = 1;
-			unitDB.Militia.setCount((int)(quartPow / unitDB.Militia.getPower()));
-			unitDB.Shortbowman.setCount((int)(quartPow / unitDB.Shortbowman.getPower()));
-			unitDB.Rider.setCount((int)(quartPow / unitDB.Rider.getPower()));
-			unitDB.Bricole.setCount((int)(quartPow / unitDB.Bricole.getPower()));
-			int totalTroops = unitDB.Militia.getCount() + unitDB.Shortbowman.getCount() + unitDB.Rider.getCount() + unitDB.Bricole.getCount();
+			unitArr[0] = unitDB.Militia;
+			unitArr[1] = unitDB.Shortbowman;
+			unitArr[2] = unitDB.Rider;
+			unitArr[3] = unitDB.Bricole;
+			unitArr[4] = null;
+			unitArr[5] = null;
+			unitArr[6] = null;
+			unitArr[7] = null;
+			// How many of each are there?
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			// How many are there total?
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
+			// int totalTroops = unitDB.Militia.getCount() + unitDB.Shortbowman.getCount() + unitDB.Rider.getCount() + unitDB.Bricole.getCount() - (int)gatherTroop;
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Militia, unitDB.Shortbowman, unitDB.Rider, unitDB.Bricole, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 			
 		}
@@ -301,146 +320,289 @@ public class UserInterface {
 		else if (masterScout.castleLevel <= 6) {
 			
 			// Infantry, Longbowman, Light Cavalry, Assault Cart
-			double quartPow = troopPow / 4;
 			int troopLevel = 2;
-			unitDB.Infantry.setCount((int)(quartPow / unitDB.Infantry.getPower()));
-			unitDB.Longbowman.setCount((int)(quartPow / unitDB.Longbowman.getPower()));
-			unitDB.LightCavalry.setCount((int)(quartPow / unitDB.LightCavalry.getPower()));
-			unitDB.AssaultCart.setCount((int)(quartPow / unitDB.AssaultCart.getPower()));
-			int totalTroops = unitDB.Infantry.getCount() + unitDB.Longbowman.getCount() + unitDB.LightCavalry.getCount() + unitDB.AssaultCart.getCount();
+			unitArr[0] = unitDB.Militia;
+			unitArr[1] = unitDB.Shortbowman;
+			unitArr[2] = null;
+			unitArr[3] = unitDB.Bricole;
+			unitArr[4] = unitDB.Infantry;
+			unitArr[5] = unitDB.Longbowman;
+			unitArr[6] = unitDB.LightCavalry;
+			unitArr[7] = unitDB.AssaultCart;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 9) {
 			
 			// Spearman, Crossbowman, Heavy Cavalry, Mangonel
-			double quartPow = troopPow / 4;
 			int troopLevel = 3;
-			unitDB.Spearman.setCount((int)(quartPow / unitDB.Spearman.getPower()));
-			unitDB.Crossbowman.setCount((int)(quartPow / unitDB.Crossbowman.getPower()));
-			unitDB.HeavyCavalry.setCount((int)(quartPow / unitDB.HeavyCavalry.getPower()));
-			unitDB.Mangonel.setCount((int)(quartPow / unitDB.Mangonel.getPower()));
-			int totalTroops = unitDB.Spearman.getCount() + unitDB.Crossbowman.getCount() + unitDB.HeavyCavalry.getCount() + unitDB.Mangonel.getCount();
+			unitArr[0] = unitDB.Infantry;
+			unitArr[1] = unitDB.Longbowman;
+			unitArr[2] = null;
+			unitArr[3] = unitDB.AssaultCart;
+			unitArr[4] = unitDB.Spearman;
+			unitArr[5] = unitDB.Crossbowman;
+			unitArr[6] = unitDB.HeavyCavalry;
+			unitArr[7] = unitDB.Mangonel;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 12) {
 
 			// Swordsman, Arbalester, Mounted Archer, Battering Ram
-			double quartPow = troopPow / 4;
 			int troopLevel = 4;
-			unitDB.Swordsman.setCount((int)(quartPow / unitDB.Swordsman.getPower()));
-			unitDB.Arbalester.setCount((int)(quartPow / unitDB.Arbalester.getPower()));
-			unitDB.MountedArcher.setCount((int)(quartPow / unitDB.MountedArcher.getPower()));
-			unitDB.BatteringRam.setCount((int)(quartPow / unitDB.BatteringRam.getPower()));
-			int totalTroops = unitDB.Spearman.getCount() + unitDB.Arbalester.getCount() + unitDB.MountedArcher.getCount() + unitDB.BatteringRam.getCount();
+			unitArr[0] = unitDB.Spearman;
+			unitArr[1] = unitDB.Longbowman;
+			unitArr[2] = unitDB.HeavyCavalry;
+			unitArr[3] = unitDB.Mangonel;
+			unitArr[4] = unitDB.Swordsman;
+			unitArr[5] = unitDB.Arbalester;
+			unitArr[6] = unitDB.MountedArcher;
+			unitArr[7] = unitDB.BatteringRam;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Swordsman, unitDB.Arbalester, unitDB.MountedArcher, unitDB.BatteringRam, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 15) {
 
 			// Pikeman, Elite Longbowman, Cavalry Shooter, Heavy Mangonel
-			double quartPow = troopPow / 4;
 			int troopLevel = 5;
-			unitDB.Pikeman.setCount((int)(quartPow / unitDB.Pikeman.getPower()));
-			unitDB.EliteLongbowman.setCount((int)(quartPow / unitDB.EliteLongbowman.getPower()));
-			unitDB.CavalryShooter.setCount((int)(quartPow / unitDB.CavalryShooter.getPower()));
-			unitDB.HeavyMangonel.setCount((int)(quartPow / unitDB.HeavyMangonel.getPower()));
-			int totalTroops = unitDB.Pikeman.getCount() + unitDB.EliteLongbowman.getCount() + unitDB.CavalryShooter.getCount() + unitDB.HeavyMangonel.getCount();
+			unitArr[0] = unitDB.Swordsman;
+			unitArr[1] = unitDB.Arbalester;
+			unitArr[2] = unitDB.HeavyCavalry;
+			unitArr[3] = unitDB.BatteringRam;
+			unitArr[4] = unitDB.Pikeman;
+			unitArr[5] = unitDB.EliteLongbowman;
+			unitArr[6] = unitDB.CavalryShooter;
+			unitArr[7] = unitDB.HeavyMangonel;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Pikeman, unitDB.EliteLongbowman, unitDB.CavalryShooter, unitDB.HeavyMangonel, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 18) {
 
 			// Noble Swordsman, Archer Guard, Knights Templar, Demolisher
-			double quartPow = troopPow / 4;
 			int troopLevel = 6;
-			unitDB.NobleSwordsman.setCount((int)(quartPow / unitDB.NobleSwordsman.getPower()));
-			unitDB.ArcherGuard.setCount((int)(quartPow / unitDB.ArcherGuard.getPower()));
-			unitDB.KnightsTemplar.setCount((int)(quartPow / unitDB.KnightsTemplar.getPower()));
-			unitDB.Demolisher.setCount((int)(quartPow / unitDB.Demolisher.getPower()));
-			int totalTroops = unitDB.NobleSwordsman.getCount() + unitDB.ArcherGuard.getCount() + unitDB.KnightsTemplar.getCount() + unitDB.Demolisher.getCount();
+			unitArr[0] = unitDB.Pikeman;
+			unitArr[1] = unitDB.Arbalester;
+			unitArr[2] = unitDB.CavalryShooter;
+			unitArr[3] = unitDB.HeavyMangonel;
+			unitArr[4] = unitDB.NobleSwordsman;
+			unitArr[5] = unitDB.ArcherGuard;
+			unitArr[6] = unitDB.KnightsTemplar;
+			unitArr[7] = unitDB.Demolisher;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.NobleSwordsman, unitDB.ArcherGuard, unitDB.KnightsTemplar, unitDB.Demolisher, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 21) {
 
 			// Guard, Heavy Crossbowman, Heavy Cavalry Archer, Trebuchet
-			double quartPow = troopPow / 4;
 			int troopLevel = 7;
-			unitDB.Guard.setCount((int)(quartPow / unitDB.Guard.getPower()));
-			unitDB.HeavyCrossbowman.setCount((int)(quartPow / unitDB.HeavyCrossbowman.getPower()));
-			unitDB.HeavyCArcher.setCount((int)(quartPow / unitDB.HeavyCArcher.getPower()));
-			unitDB.Trebuchet.setCount((int)(quartPow / unitDB.Trebuchet.getPower()));
-			int totalTroops = unitDB.Guard.getCount() + unitDB.HeavyCrossbowman.getCount() + unitDB.HeavyCArcher.getCount() + unitDB.Trebuchet.getCount();
+			unitArr[0] = unitDB.Pikeman;
+			unitArr[1] = unitDB.ArcherGuard;
+			unitArr[2] = unitDB.KnightsTemplar;
+			unitArr[3] = unitDB.Demolisher;
+			unitArr[4] = unitDB.Guard;
+			unitArr[5] = unitDB.HeavyCrossbowman;
+			unitArr[6] = unitDB.HeavyCArcher;
+			unitArr[7] = unitDB.Trebuchet;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Guard, unitDB.HeavyCrossbowman, unitDB.HeavyCArcher, unitDB.Trebuchet, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 25) {
 
 			// Heavy Pikeman, Eagle Archer, Royal Knight, Heavy Trebuchet
-			double quartPow = troopPow / 4;
 			int troopLevel = 8;
-			unitDB.HeavyPikeman.setCount((int)(quartPow / unitDB.HeavyPikeman.getPower()));
-			unitDB.EagleArcher.setCount((int)(quartPow / unitDB.EagleArcher.getPower()));
-			unitDB.RoyalKnight.setCount((int)(quartPow / unitDB.RoyalKnight.getPower()));
-			unitDB.HeavyTrebuchet.setCount((int)(quartPow / unitDB.HeavyTrebuchet.getPower()));
-			int totalTroops = unitDB.HeavyPikeman.getCount() + unitDB.EagleArcher.getCount() + unitDB.RoyalKnight.getCount() + unitDB.HeavyTrebuchet.getCount();
+			unitArr[0] = unitDB.Guard;
+			unitArr[1] = unitDB.HeavyCrossbowman;
+			unitArr[2] = unitDB.HeavyCArcher;
+			unitArr[3] = unitDB.Demolisher;
+			unitArr[4] = unitDB.HeavyPikeman;
+			unitArr[5] = unitDB.EagleArcher;
+			unitArr[6] = unitDB.RoyalKnight;
+			unitArr[7] = unitDB.HeavyTrebuchet;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.HeavyPikeman, unitDB.EagleArcher, unitDB.RoyalKnight, unitDB.HeavyTrebuchet, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 29) {
 
 			// Halberdier, Windlassman, Strike Archer, Siege Tower
-			double quartPow = troopPow / 4;
 			int troopLevel = 9;
-			unitDB.Halberdier.setCount((int)(quartPow / unitDB.Halberdier.getPower()));
-			unitDB.Windlassman.setCount((int)(quartPow / unitDB.Windlassman.getPower()));
-			unitDB.StrikeArcher.setCount((int)(quartPow / unitDB.StrikeArcher.getPower()));
-			unitDB.SiegeTower.setCount((int)(quartPow / unitDB.SiegeTower.getPower()));
-			int totalTroops = unitDB.Halberdier.getCount() + unitDB.EagleArcher.getCount() + unitDB.RoyalKnight.getCount() + unitDB.HeavyTrebuchet.getCount();
+			unitArr[0] = unitDB.Guard;
+			unitArr[1] = unitDB.EagleArcher;
+			unitArr[2] = unitDB.RoyalKnight;
+			unitArr[3] = unitDB.HeavyTrebuchet;
+			unitArr[4] = unitDB.Halberdier;
+			unitArr[5] = unitDB.Windlassman;
+			unitArr[6] = unitDB.StrikeArcher;
+			unitArr[7] = unitDB.SiegeTower;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Halberdier, unitDB.Windlassman, unitDB.StrikeArcher, unitDB.SiegeTower, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 30) {
 
 			// Berserker, Marksman, Divine Knight, Mighty Trebuchet
-			double quartPow = troopPow / 4;
 			int troopLevel = 10;
-			unitDB.Berserker.setCount((int)(quartPow / unitDB.Berserker.getPower()));
-			unitDB.Marksman.setCount((int)(quartPow / unitDB.Marksman.getPower()));
-			unitDB.DivineKnight.setCount((int)(quartPow / unitDB.DivineKnight.getPower()));
-			unitDB.MightyTrebuchet.setCount((int)(quartPow / unitDB.MightyTrebuchet.getPower()));
-			int totalTroops = unitDB.Berserker.getCount() + unitDB.Marksman.getCount() + unitDB.DivineKnight.getCount() + unitDB.MightyTrebuchet.getCount();
+			unitArr[0] = unitDB.Halberdier;
+			unitArr[1] = unitDB.Windlassman;
+			unitArr[2] = unitDB.StrikeArcher;
+			unitArr[3] = unitDB.SiegeTower;
+			unitArr[4] = unitDB.Berserker;
+			unitArr[5] = unitDB.Marksman;
+			unitArr[6] = unitDB.DivineKnight;
+			unitArr[7] = unitDB.MightyTrebuchet;
+			quartPow = quartPow / 2;
+			unitArr[0].setCount((int)(quartPow / unitArr[0].getPower()));
+			unitArr[1].setCount((int)(quartPow / unitArr[1].getPower()));
+			unitArr[2].setCount((int)(quartPow / unitArr[2].getPower()));
+			unitArr[3].setCount((int)(quartPow / unitArr[3].getPower()));
+			unitArr[4].setCount((int)(quartPow / unitArr[4].getPower()));
+			unitArr[5].setCount((int)(quartPow / unitArr[5].getPower()));
+			unitArr[6].setCount((int)(quartPow / unitArr[6].getPower()));
+			unitArr[7].setCount((int)(quartPow / unitArr[7].getPower()));
+			int totalTroops = 0;
+			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
 			// Tell the user the number of troops of each type.
-			String value = printTroops(unitDB.Berserker, unitDB.Marksman, unitDB.DivineKnight, unitDB.MightyTrebuchet, troopLevel, totalTroops, (int)troopPow);
+			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 		}
 		
 	}
 	
-	private String printTroops(unit one, unit two, unit three, unit four, int troopLevel, int maxTroopCount, int troopPow) {
+	private String printTroops(unit unitArr[], int troopLevel, int maxTroopCount, int maxTroopPow, int gatherTroop) {
 		String value;
-		value = ("The lord's estimated troop power is " + troopPow + "\n"
-				+ "The lord should have an estimated total of " + maxTroopCount + " troops\n at their disposal.\n"
-				+ one.count + " Level " + troopLevel + " " + one.getName()  + " \n" + two.count + " Level " + troopLevel +  " " + two.getName() + " \n"
-				+ three.count + " Level " + troopLevel +  " " + three.getName() + " \n" + four.count + " Level " + troopLevel + " " + four.getName() + " \n\n");
+		if (unitArr[4] != null && unitArr[2] != null) value = ("The lord's estimated troop power is " + maxTroopPow + "\n"
+					+ "The lord should have an estimated total of " + maxTroopCount + " troops" + "\n" + "at their disposal.\n"
+					+ "Of these troops, there is an estimated total of " + gatherTroop + "\ngathering troops in "
+					+ "their army.\n" 
+					+ unitArr[0].count + " Level " + unitArr[0].level + " " + unitArr[0].getName() + "\n" 
+					+ unitArr[1].count + " Level " + unitArr[1].level + " " + unitArr[1].getName() + "\n"
+					+ unitArr[2].count + " Level " + unitArr[2].level + " " + unitArr[2].getName() + "\n" 
+					+ unitArr[3].count + " Level " + unitArr[3].level + " " + unitArr[3].getName() + "\n"
+					+ unitArr[4].count + " Level " + unitArr[4].level + " " + unitArr[4].getName() + "\n" 
+					+ unitArr[5].count + " Level " + unitArr[5].level + " " + unitArr[5].getName() + "\n"
+					+ unitArr[6].count + " Level " + unitArr[6].level + " " + unitArr[6].getName() + "\n" 
+					+ unitArr[7].count + " Level " + unitArr[7].level + " " + unitArr[7].getName() + "\n\n");
+		else if (unitArr[2] == null) value = ("The lord's estimated troop power is " + maxTroopPow + "\n"
+				+ "The lord should have an estimated total of " + maxTroopCount + " troops" + "\n" + "at their disposal.\n"
+				+ "Of these troops, there is an estimated total of " + gatherTroop + "\ngathering troops in "
+				+ "their army.\n" 
+				+ unitArr[0].count + " Level " + unitArr[0].level + " " + unitArr[0].getName() + "\n" 
+				+ unitArr[1].count + " Level " + unitArr[1].level + " " + unitArr[1].getName() + "\n" 
+				+ unitArr[3].count + " Level " + unitArr[3].level + " " + unitArr[3].getName() + "\n"
+				+ unitArr[4].count + " Level " + unitArr[4].level + " " + unitArr[4].getName() + "\n" 
+				+ unitArr[5].count + " Level " + unitArr[5].level + " " + unitArr[5].getName() + "\n"
+				+ unitArr[6].count + " Level " + unitArr[6].level + " " + unitArr[6].getName() + "\n" 
+				+ unitArr[7].count + " Level " + unitArr[7].level + " " + unitArr[7].getName() + "\n\n");
+		else value = ("The lord's estimated troop power is " + maxTroopPow + "\n"
+				+ "The lord should have an estimated total of " + maxTroopCount + " troops" + "\n" + "at their disposal.\n"
+				+ "Of these troops, there is an estimated total of " + gatherTroop + "\ngathering troops in "
+				+ "their army.\n" 
+				+ unitArr[0].count + " Level " + unitArr[0].level + " " + unitArr[0].getName() + "\n" 
+				+ unitArr[1].count + " Level " + unitArr[1].level + " " + unitArr[1].getName() + "\n"
+				+ unitArr[2].count + " Level " + unitArr[2].level + " " + unitArr[2].getName() + "\n" 
+				+ unitArr[3].count + " Level " + unitArr[3].level + " " + unitArr[3].getName() + "\n\n");
+		
 		return value;
 		
 	}
