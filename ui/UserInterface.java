@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.JTextPane;
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JMenuBar;
@@ -19,10 +18,12 @@ import javax.swing.SpringLayout;
 import calc.Scout;
 import calc.unit;
 import calc.unitDB;
+import ui.ResultsWindow;
 
 public class UserInterface {
 
 	private JFrame frmScout;
+	private JFrame resultsFrame;
 	private JTextField lordPower;
 	private JTextField lordCastleLevel;
 	protected double version = 0.06;
@@ -56,6 +57,13 @@ public class UserInterface {
 	 */
 	private void initialize() {
 		frmScout = new JFrame();
+		frmScout.setVisible(true);
+		resultsFrame = new JFrame();
+		resultsFrame.setVisible(true);
+		resultsFrame.setBounds(100, 100, 360, 380);
+		resultsFrame.setLocationRelativeTo(null);
+		resultsFrame.setResizable(false);
+		ResultsWindow resultsWinbox = new ResultsWindow(resultsFrame);
 		Color background = new Color(255, 255, 255);
 		Color foreground = new Color(30, 144, 255);
 		Color backgroundTextField = new Color(204,255,255);
@@ -66,7 +74,7 @@ public class UserInterface {
 		frmScout.setIconImage(Toolkit.getDefaultToolkit().getImage(UserInterface.class.getResource("/ui/nte.gif")));
 		frmScout.setTitle("Scout");
 		frmScout.getContentPane().setBackground(Color.WHITE);
-		frmScout.setBounds(100, 100, 360, 370);
+		frmScout.setBounds(100, 100, 360, 160);
 		frmScout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frmScout.getContentPane().setLayout(springLayout);
@@ -107,24 +115,17 @@ public class UserInterface {
 		springLayout.putConstraint(SpringLayout.EAST, labelLordCastleLevel, -15, SpringLayout.WEST, lordCastleLevel);
 		frmScout.getContentPane().add(labelLordCastleLevel);
 		
-		JTextPane lordTroopBreakdown = new JTextPane();
-		lordTroopBreakdown.setForeground(foreground);
-		springLayout.putConstraint(SpringLayout.WEST, lordTroopBreakdown, 15, SpringLayout.WEST, frmScout.getContentPane());
-		springLayout.putConstraint(SpringLayout.SOUTH, lordTroopBreakdown, -15, SpringLayout.SOUTH, frmScout.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, lordTroopBreakdown, -15, SpringLayout.EAST, frmScout.getContentPane());
-		frmScout.getContentPane().add(lordTroopBreakdown);
-		
 		JButton btnCalculate = new JButton("Calculate");
+		springLayout.putConstraint(SpringLayout.SOUTH, btnCalculate, -15, SpringLayout.SOUTH, frmScout.getContentPane());
 		btnCalculate.setForeground(foreground);
 		springLayout.putConstraint(SpringLayout.WEST, btnCalculate, 190, SpringLayout.WEST, frmScout.getContentPane());
-		springLayout.putConstraint(SpringLayout.NORTH, lordTroopBreakdown, 15, SpringLayout.SOUTH, btnCalculate);
 		springLayout.putConstraint(SpringLayout.NORTH, btnCalculate, 5, SpringLayout.SOUTH, lordCastleLevel);
 		springLayout.putConstraint(SpringLayout.EAST, btnCalculate, -15, SpringLayout.EAST, frmScout.getContentPane());
 		btnCalculate.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnCalculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Scout masterScout = new Scout(Double.parseDouble(lordPower.getText()),Double.parseDouble(lordCastleLevel.getText()));	
-				initUnits(masterScout, lordTroopBreakdown);
+				initUnits(masterScout, resultsWinbox);
 			}
 		});
 		frmScout.getContentPane().add(btnCalculate);
@@ -172,7 +173,7 @@ public class UserInterface {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(frmScout, ""
 						+ "Scout is a program written by George Dunbar (AKA Ridonk in Kingdom 850)\n"
-						+ "Version: " + version + "Build: " + build +"\n"
+						+ "Version: " + version + " Build: " + build +"\n"
 						+ "Build date: Jan 22 2016\n"
 						+ "Scout is open source. If used for any applications credit must be given.\n"
 						+ "Released under GNU General Public License, V3");
@@ -181,10 +182,10 @@ public class UserInterface {
 		mnHelp.add(mntmAbout);
 	}
 	
-	private void initUnits(Scout masterScout, JTextPane lordTroopBreakdown) {
+	private void initUnits(Scout masterScout, ResultsWindow resultsWinbox) {
 		
 		unitDB unitDB = new unitDB();
-				
+		
 		// Create infantry units
 		unitDB.setMilitia(new unit(1, 1, 6, 14, 8, 8, 10.46, 1, 0.21, 1.0));
 		unitDB.Militia.setName("Militia");
@@ -273,11 +274,11 @@ public class UserInterface {
 		unitDB.setMightyTrebuchet(new unit(10, 30, 164, 73, 26, 7, 22.22, 10, 2.08, 8.2));
 		unitDB.MightyTrebuchet.setName("Mighty Trebuchet");
 		
-		breakdownUnits(unitDB, masterScout, lordTroopBreakdown);
+		breakdownUnits(unitDB, masterScout, resultsWinbox);
 		
 	}
 	
-	private void breakdownUnits(unitDB unitDB, Scout masterScout, JTextPane lordTroopBreakdown) {
+	private void breakdownUnits(unitDB unitDB, Scout masterScout, ResultsWindow resultsWinbox) {
 		
 		double troopPow = masterScout.getOverPow() * Scout.troopPerc;
 		
@@ -292,7 +293,9 @@ public class UserInterface {
 			unitDB.Bricole.setCount((int)(quartPow / unitDB.Bricole.getPower()));
 			int totalTroops = unitDB.Militia.getCount() + unitDB.Shortbowman.getCount() + unitDB.Rider.getCount() + unitDB.Bricole.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Militia, unitDB.Shortbowman, unitDB.Rider, unitDB.Bricole, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Militia, unitDB.Shortbowman, unitDB.Rider, unitDB.Bricole, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
+			
 		}
 		
 		else if (masterScout.castleLevel <= 6) {
@@ -306,7 +309,8 @@ public class UserInterface {
 			unitDB.AssaultCart.setCount((int)(quartPow / unitDB.AssaultCart.getPower()));
 			int totalTroops = unitDB.Infantry.getCount() + unitDB.Longbowman.getCount() + unitDB.LightCavalry.getCount() + unitDB.AssaultCart.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 9) {
@@ -320,7 +324,8 @@ public class UserInterface {
 			unitDB.Mangonel.setCount((int)(quartPow / unitDB.Mangonel.getPower()));
 			int totalTroops = unitDB.Spearman.getCount() + unitDB.Crossbowman.getCount() + unitDB.HeavyCavalry.getCount() + unitDB.Mangonel.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);	
+			String value = printTroops(unitDB.Infantry, unitDB.Longbowman, unitDB.LightCavalry, unitDB.AssaultCart, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 12) {
@@ -334,7 +339,8 @@ public class UserInterface {
 			unitDB.BatteringRam.setCount((int)(quartPow / unitDB.BatteringRam.getPower()));
 			int totalTroops = unitDB.Spearman.getCount() + unitDB.Arbalester.getCount() + unitDB.MountedArcher.getCount() + unitDB.BatteringRam.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Swordsman, unitDB.Arbalester, unitDB.MountedArcher, unitDB.BatteringRam, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Swordsman, unitDB.Arbalester, unitDB.MountedArcher, unitDB.BatteringRam, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 15) {
@@ -348,7 +354,8 @@ public class UserInterface {
 			unitDB.HeavyMangonel.setCount((int)(quartPow / unitDB.HeavyMangonel.getPower()));
 			int totalTroops = unitDB.Pikeman.getCount() + unitDB.EliteLongbowman.getCount() + unitDB.CavalryShooter.getCount() + unitDB.HeavyMangonel.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Pikeman, unitDB.EliteLongbowman, unitDB.CavalryShooter, unitDB.HeavyMangonel, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Pikeman, unitDB.EliteLongbowman, unitDB.CavalryShooter, unitDB.HeavyMangonel, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 18) {
@@ -362,7 +369,8 @@ public class UserInterface {
 			unitDB.Demolisher.setCount((int)(quartPow / unitDB.Demolisher.getPower()));
 			int totalTroops = unitDB.NobleSwordsman.getCount() + unitDB.ArcherGuard.getCount() + unitDB.KnightsTemplar.getCount() + unitDB.Demolisher.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.NobleSwordsman, unitDB.ArcherGuard, unitDB.KnightsTemplar, unitDB.Demolisher, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.NobleSwordsman, unitDB.ArcherGuard, unitDB.KnightsTemplar, unitDB.Demolisher, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 21) {
@@ -376,7 +384,8 @@ public class UserInterface {
 			unitDB.Trebuchet.setCount((int)(quartPow / unitDB.Trebuchet.getPower()));
 			int totalTroops = unitDB.Guard.getCount() + unitDB.HeavyCrossbowman.getCount() + unitDB.HeavyCArcher.getCount() + unitDB.Trebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Guard, unitDB.HeavyCrossbowman, unitDB.HeavyCArcher, unitDB.Trebuchet, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Guard, unitDB.HeavyCrossbowman, unitDB.HeavyCArcher, unitDB.Trebuchet, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 25) {
@@ -390,7 +399,8 @@ public class UserInterface {
 			unitDB.HeavyTrebuchet.setCount((int)(quartPow / unitDB.HeavyTrebuchet.getPower()));
 			int totalTroops = unitDB.HeavyPikeman.getCount() + unitDB.EagleArcher.getCount() + unitDB.RoyalKnight.getCount() + unitDB.HeavyTrebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.HeavyPikeman, unitDB.EagleArcher, unitDB.RoyalKnight, unitDB.HeavyTrebuchet, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.HeavyPikeman, unitDB.EagleArcher, unitDB.RoyalKnight, unitDB.HeavyTrebuchet, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 29) {
@@ -404,7 +414,8 @@ public class UserInterface {
 			unitDB.SiegeTower.setCount((int)(quartPow / unitDB.SiegeTower.getPower()));
 			int totalTroops = unitDB.Halberdier.getCount() + unitDB.EagleArcher.getCount() + unitDB.RoyalKnight.getCount() + unitDB.HeavyTrebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Halberdier, unitDB.Windlassman, unitDB.StrikeArcher, unitDB.SiegeTower, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Halberdier, unitDB.Windlassman, unitDB.StrikeArcher, unitDB.SiegeTower, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 		else if (masterScout.castleLevel <= 30) {
@@ -418,17 +429,19 @@ public class UserInterface {
 			unitDB.MightyTrebuchet.setCount((int)(quartPow / unitDB.MightyTrebuchet.getPower()));
 			int totalTroops = unitDB.Berserker.getCount() + unitDB.Marksman.getCount() + unitDB.DivineKnight.getCount() + unitDB.MightyTrebuchet.getCount();
 			// Tell the user the number of troops of each type.
-			printTroops(unitDB.Berserker, unitDB.Marksman, unitDB.DivineKnight, unitDB.MightyTrebuchet, troopLevel, totalTroops, (int)troopPow, lordTroopBreakdown);
+			String value = printTroops(unitDB.Berserker, unitDB.Marksman, unitDB.DivineKnight, unitDB.MightyTrebuchet, troopLevel, totalTroops, (int)troopPow);
+			resultsWinbox.setResultsBox(value);
 		}
 		
 	}
 	
-	private void printTroops(unit one, unit two, unit three, unit four, int troopLevel, int maxTroopCount, int troopPow, JTextPane lordTroopBreakdown) {
-		
-		lordTroopBreakdown.setText("The lord's estimated troop power is " + troopPow + "\n\n"
-				+ "The lord should have an estimated total of " + maxTroopCount + " troops at their disposal.\n\n"
-				+ one.count + " Level " + troopLevel + " " + one.getName()  + " \n\n" + two.count + " Level " + troopLevel +  " " + two.getName() + " \n\n"
-				+ three.count + " Level " + troopLevel +  " " + three.getName() + " \n\n" + four.count + " Level " + troopLevel + " " + four.getName() + " \n\n");
+	private String printTroops(unit one, unit two, unit three, unit four, int troopLevel, int maxTroopCount, int troopPow) {
+		String value;
+		value = ("The lord's estimated troop power is " + troopPow + "\n"
+				+ "The lord should have an estimated total of " + maxTroopCount + " troops\n at their disposal.\n"
+				+ one.count + " Level " + troopLevel + " " + one.getName()  + " \n" + two.count + " Level " + troopLevel +  " " + two.getName() + " \n"
+				+ three.count + " Level " + troopLevel +  " " + three.getName() + " \n" + four.count + " Level " + troopLevel + " " + four.getName() + " \n\n");
+		return value;
 		
 	}
 }
