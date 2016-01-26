@@ -1,32 +1,18 @@
 package ui;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.Toolkit;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.SpringLayout;
-import calc.Scout;
-import calc.unitDB;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import calc.*;
 
 public class UserInterface {
 
 	private JFrame frmScout;
-	private JFrame resultsFrame;
+	private ResultsWindow resultsWinbox;
 	private JTextField lordPower;
 	private JTextField lordCastleLevel;
-	protected double version = 0.08;
-	protected int build = 1;
+	protected double version = 0.1;
+	protected int build = 2;
 
 	/**
 	 * Launch the application.
@@ -55,20 +41,17 @@ public class UserInterface {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		// Main JFrame
 		frmScout = new JFrame();
-		resultsFrame = new JFrame();
-		frmScout.setVisible(true);
-		Color background = new Color(255, 255, 255); // White
-		Color foreground = new Color(30, 144, 255); // Dodger Blue
-		ResultsWindow resultsWinbox = new ResultsWindow(resultsFrame);
-		Color backgroundTextField = new Color(204,255,255);
-		frmScout.setForeground(foreground);
+		Color background = Color.DARK_GRAY; // Dark Gray
+		Color foreground = new Color(255, 69, 0); // Red/orange
 		frmScout.getContentPane().setForeground(foreground);
-		frmScout.setBackground(background);
+		frmScout.getContentPane().setBackground(background);
 		frmScout.setResizable(false);
 		frmScout.setIconImage(Toolkit.getDefaultToolkit().getImage(UserInterface.class.getResource("/ui/nte.gif")));
 		frmScout.setTitle("Scout");
-		frmScout.getContentPane().setBackground(Color.WHITE);
+		frmScout.getContentPane().setBackground(Color.DARK_GRAY);
 		frmScout.setBounds(100, 100, 360, 160);
 		frmScout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
@@ -80,7 +63,7 @@ public class UserInterface {
 		springLayout.putConstraint(SpringLayout.WEST, lordPower, 190, SpringLayout.WEST, frmScout.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, lordPower, -15, SpringLayout.EAST, frmScout.getContentPane());
 		lordPower.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lordPower.setBackground(backgroundTextField);
+		lordPower.setBackground(background);
 		frmScout.getContentPane().add(lordPower);
 		lordPower.setColumns(10);
 		
@@ -90,7 +73,7 @@ public class UserInterface {
 		springLayout.putConstraint(SpringLayout.WEST, lordCastleLevel, 190, SpringLayout.WEST, frmScout.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, lordCastleLevel, -15, SpringLayout.EAST, frmScout.getContentPane());
 		lordCastleLevel.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lordCastleLevel.setBackground(backgroundTextField);
+		lordCastleLevel.setBackground(background);
 		lordCastleLevel.setColumns(10);
 		frmScout.getContentPane().add(lordCastleLevel);
 		
@@ -120,17 +103,16 @@ public class UserInterface {
 		btnCalculate.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnCalculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				resultsFrame.setVisible(true);
-				resultsFrame.setBounds(100, 100, 360, 380);
-				resultsFrame.setLocationRelativeTo(null);
-				resultsFrame.setResizable(false);
-				resultsFrame.setBackground(background);
-				resultsFrame.setForeground(foreground);
-				resultsFrame.setTitle("Scout Results");
-				resultsFrame.setLayout(new FlowLayout());
-				Scout masterScout = new Scout(Double.parseDouble(lordPower.getText()),Double.parseDouble(lordCastleLevel.getText()));
-				unitDB unitDB = new unitDB();
-				unitDB.initUnits(masterScout, unitDB, resultsWinbox);
+				if ((lordPower.getText()).isEmpty() == true || (lordCastleLevel.getText()).isEmpty() == true) {
+					JOptionPane.showMessageDialog(frmScout, "The lord power and castle level must be entered before anything can be calculated.");
+				}
+				else {
+					// Results window
+					Scout masterScout = new Scout(Double.parseDouble(lordPower.getText()),Double.parseDouble(lordCastleLevel.getText()));
+					unitDB unitDB = new unitDB();
+					if (resultsWinbox == null) resultsWinbox = new ResultsWindow();
+					unitDB.initUnits(masterScout, unitDB, resultsWinbox);
+				}
 			}
 		});
 		frmScout.getContentPane().add(btnCalculate);
@@ -145,7 +127,7 @@ public class UserInterface {
 		mnFile.setForeground(foreground);
 		menuBar.add(mnFile);
 		
-		JMenuItem mntmClose = new JMenuItem("Close");
+		JMenuItem mntmClose = new JMenuItem("Exit");
 		mntmClose.setBackground(background);
 		mntmClose.setForeground(foreground);
 		mntmClose.addActionListener(new ActionListener() {
@@ -179,7 +161,7 @@ public class UserInterface {
 				JOptionPane.showMessageDialog(frmScout, ""
 						+ "Scout is a program written by George Dunbar (AKA Ridonk in Kingdom 850)\n"
 						+ "Version: " + version + " Build: " + build +"\n"
-						+ "Build date: Jan 22 2016\n"
+						+ "Build date: Jan 25 2016\n"
 						+ "Scout is open source. If used for any applications credit must be given.\n"
 						+ "Released under GNU General Public License, V3");
 			}

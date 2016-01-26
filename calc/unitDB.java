@@ -375,7 +375,104 @@ public class unitDB {
 	public void setMightyTrebuchet(unit mightyTrebuchet) {
 		MightyTrebuchet = mightyTrebuchet;
 	}
-public void breakdownUnits(unitDB unitDB, Scout masterScout, ResultsWindow resultsWinbox) {
+	
+	public void initUnits(Scout masterScout, unitDB unitDB, ResultsWindow resultsWinbox) {
+		
+//		unitDB unitDB = new unitDB();
+		
+		// Create infantry units
+		unitDB.setMilitia(new unit(1, 1, 6, 14, 8, 8, 10.46, 1, 0.21, 1.0));
+		unitDB.Militia.setName("Militia");
+		unitDB.setInfantry(new unit(2, 4, 8, 19, 9, 8, 10.46, 1, 0.42, 1.4));
+		unitDB.Infantry.setName("Infantry");
+		unitDB.setSpearman(new unit(3, 7, 22, 13, 6, 9, 11.46, 1, 0.63, 1.9));
+		unitDB.Spearman.setName("Spearman");
+		unitDB.setSwordsman(new unit(4, 10, 15, 35, 15, 8, 11.46, 1, 0.83, 2.5));
+		unitDB.Swordsman.setName("Swordsman");
+		unitDB.setPikeman(new unit(5, 13, 38, 22, 15, 9, 13.07, 1, 1.04, 3.2));
+		unitDB.Pikeman.setName("Pikeman");
+		unitDB.setNobleSwordsman(new unit(6, 16, 24, 56, 22, 8, 13.07, 1, 1.25, 4.0));
+		unitDB.NobleSwordsman.setName("Noble Swordsman");
+		unitDB.setGuard(new unit(7, 19, 29, 68, 26, 8, 14.07, 1, 1.46, 4.9));
+		unitDB.Guard.setName("Guard");
+		unitDB.setHeavyPikeman(new unit(8, 22, 70, 41, 15, 9, 14.38, 1, 1.67, 5.9));
+		unitDB.HeavyPikeman.setName("Heavy Pikeman");
+		unitDB.setHalberdier(new unit(9, 26, 84, 49, 18, 9, 15.68, 1, 1.88, 7.0));
+		unitDB.Halberdier.setName("Halberdier");
+		unitDB.setBerserker(new unit(10, 30, 49, 114, 42, 8, 15.68, 1, 2.08, 8.2));
+		unitDB.Berserker.setName("Berserker");
+		
+		// Create archer units
+		unitDB.setShortbowman(new unit(1, 1, 8, 6, 3, 8, 10.46, 5, 0.21, 1.0));
+		unitDB.Shortbowman.setName("Shortbowman");
+		unitDB.setLongbowman(new unit(2, 4, 11, 8, 3, 8, 10.46, 5, 0.42, 1.4));
+		unitDB.Longbowman.setName("Longbowman");
+		unitDB.setCrossbowman(new unit(3, 7, 26, 13, 4, 8, 10.46, 8, 0.63, 1.9));
+		unitDB.Crossbowman.setName("Crossbowman");
+		unitDB.setArbalester(new unit(4, 10, 35, 17, 5, 8, 10.46, 8, 0.83, 2.5));
+		unitDB.Arbalester.setName("Arbalester");
+		unitDB.setEliteLongbowman(new unit(5, 13, 25, 19, 6, 8, 13.07, 5, 1.04, 3.2));
+		unitDB.EliteLongbowman.setName("Elite Longbowman");
+		unitDB.setArcherGuard(new unit(6, 16, 32, 24, 8, 8, 13.07, 5, 1.25, 4));
+		unitDB.ArcherGuard.setName("Archer Guard");
+		unitDB.setHeavyCrossbowman(new unit(7, 19, 68, 34, 10, 8, 13.07, 8, 1.46, 4.9));
+		unitDB.HeavyCrossbowman.setName("Heavy Crossbowman");
+		unitDB.setEagleArcher(new unit(8, 22, 47, 35, 11, 8, 14.38, 5, 1.67, 5.9));
+		unitDB.EagleArcher.setName("Eagle Archer");
+		unitDB.setWindlassman(new unit(9, 26, 98, 49, 13, 8, 14.38, 8, 1.88, 7.0));
+		unitDB.Windlassman.setName("Windlassman");
+		unitDB.setMarksman(new unit(10, 30, 65, 49, 15, 8, 15.68, 5, 2.08, 9.2));
+		unitDB.Marksman.setName("Marksman");
+		
+		// Create cavalry units
+		unitDB.setRider(new unit(1, 1, 11, 8, 4, 14, 7.84, 1, 0.21, 1.0));
+		unitDB.Rider.setName("Rider");
+		unitDB.setLightCavalry(new unit(2, 4, 15, 11, 4, 14, 7.84, 1, 0.42, 1.4));
+		unitDB.LightCavalry.setName("Light Cavalry");
+		unitDB.setHeavyCavalry(new unit(3, 7, 20, 15, 6, 14, 9.15, 1, 0.63, 1.9));
+		unitDB.HeavyCavalry.setName("Heavy Cavalry");
+		unitDB.setMountedArcher(new unit(4, 10, 32, 17, 7, 13, 9.15, 4, 0.83, 2.5));
+		unitDB.MountedArcher.setName("Mounted Archer");
+		unitDB.setCavalryShooter(new unit(5, 13, 41, 22, 9, 13, 10.46, 4, 1.04, 3.2));
+		unitDB.CavalryShooter.setName("Cavalry Shooter");
+		unitDB.setKnightsTemplar(new unit(6, 16, 44, 22, 9, 14, 10.46, 1, 1.25, 4.0));
+		unitDB.KnightsTemplar.setName("Knights Templar");
+		unitDB.setHeavyCArcher(new unit(7, 19, 63, 34, 13, 13, 11.76, 4, 1.46, 4.9));
+		unitDB.HeavyCArcher.setName("Heavy Calvary Archer");
+		unitDB.setRoyalKnight(new unit(8, 22, 64, 47, 15, 14, 11.76, 1, 1.67, 5.9));
+		unitDB.RoyalKnight.setName("Royal Knight");
+		unitDB.setStrikeArcher(new unit(9, 26, 91, 49, 18, 13, 13.07, 4, 1.88, 7.0));
+		unitDB.StrikeArcher.setName("Strike Archer");
+		unitDB.setDivineKnight(new unit(10, 30, 90, 65, 21, 14, 13.07, 1, 2.08, 8.2));
+		unitDB.DivineKnight.setName("Divine Knight");
+		
+		// Create siege units
+		unitDB.setBricole(new unit(1, 1, 20, 9, 5, 7, 16.99, 10, 0.21, 1.0));
+		unitDB.Bricole.setName("Bricole");
+		unitDB.setAssaultCart(new unit(2, 4, 9, 14, 8, 5, 26.14, 1, 0.42, 1.4));
+		unitDB.AssaultCart.setName("Assault Cart");
+		unitDB.setMangonel(new unit(3, 7, 38, 17, 7, 7, 18.30, 10, 0.63, 1.9));
+		unitDB.Mangonel.setName("Mangonel");
+		unitDB.setBatteringRam(new unit(4, 10, 17, 25, 13, 5, 27.45, 1, 0.83, 2.5));
+		unitDB.BatteringRam.setName("Battering Ram");
+		unitDB.setHeavyMangonel(new unit(5, 13, 64, 28, 11, 7, 19.61, 10, 1.04, 3.2));
+		unitDB.HeavyMangonel.setName("Heavy Mangonel");
+		unitDB.setDemolisher(new unit(6, 16, 28, 40, 19, 5, 28.75, 1, 1.25, 4.0));
+		unitDB.Demolisher.setName("Demolisher");
+		unitDB.setTrebuchet(new unit(7, 19, 98, 44, 16, 7, 20.91, 10, 1.46, 4.9));
+		unitDB.Trebuchet.setName("Trebuchet");
+		unitDB.setHeavyTrebuchet(new unit(8, 22, 118, 53, 19, 7, 20.91, 10, 1.67, 5.9));
+		unitDB.HeavyTrebuchet.setName("Heavy Trebuchet");
+		unitDB.setSiegeTower(new unit(9, 26, 49, 70, 32, 5, 31.37, 1, 1.88, 7.0));
+		unitDB.SiegeTower.setName("Siege Tower");
+		unitDB.setMightyTrebuchet(new unit(10, 30, 164, 73, 26, 7, 22.22, 10, 2.08, 8.2));
+		unitDB.MightyTrebuchet.setName("Mighty Trebuchet");
+		
+		unitDB.breakdownUnits(unitDB, masterScout, resultsWinbox);
+		
+	}
+	
+	public void breakdownUnits(unitDB unitDB, Scout masterScout, ResultsWindow resultsWinbox) {
 		
 		double maxTroopPow = masterScout.getOverPow() * Scout.troopPerc;
 		double gatherPerc = 0.026;
@@ -404,8 +501,6 @@ public void breakdownUnits(unitDB unitDB, Scout masterScout, ResultsWindow resul
 			// How many are there total?
 			int totalTroops = 0;
 			for (int i = 0; i < 8; i++) if (unitArr[i] != null) totalTroops = totalTroops + unitArr[i].getCount();
-			// int totalTroops = unitDB.Militia.getCount() + unitDB.Shortbowman.getCount() + unitDB.Rider.getCount() + unitDB.Bricole.getCount() - (int)gatherTroop;
-			// Tell the user the number of troops of each type.
 			String value = printTroops(unitArr, troopLevel, totalTroops, (int)maxTroopPow, (int)gatherTroop);
 			resultsWinbox.setResultsBox(value);
 			
@@ -662,103 +757,6 @@ public void breakdownUnits(unitDB unitDB, Scout masterScout, ResultsWindow resul
 		}
 		
 	}
-
-
-public void initUnits(Scout masterScout, unitDB unitDB, ResultsWindow resultsWinbox) {
-	
-//	unitDB unitDB = new unitDB();
-	
-	// Create infantry units
-	unitDB.setMilitia(new unit(1, 1, 6, 14, 8, 8, 10.46, 1, 0.21, 1.0));
-	unitDB.Militia.setName("Militia");
-	unitDB.setInfantry(new unit(2, 4, 8, 19, 9, 8, 10.46, 1, 0.42, 1.4));
-	unitDB.Infantry.setName("Infantry");
-	unitDB.setSpearman(new unit(3, 7, 22, 13, 6, 9, 11.46, 1, 0.63, 1.9));
-	unitDB.Spearman.setName("Spearman");
-	unitDB.setSwordsman(new unit(4, 10, 15, 35, 15, 8, 11.46, 1, 0.83, 2.5));
-	unitDB.Swordsman.setName("Swordsman");
-	unitDB.setPikeman(new unit(5, 13, 38, 22, 15, 9, 13.07, 1, 1.04, 3.2));
-	unitDB.Pikeman.setName("Pikeman");
-	unitDB.setNobleSwordsman(new unit(6, 16, 24, 56, 22, 8, 13.07, 1, 1.25, 4.0));
-	unitDB.NobleSwordsman.setName("Noble Swordsman");
-	unitDB.setGuard(new unit(7, 19, 29, 68, 26, 8, 14.07, 1, 1.46, 4.9));
-	unitDB.Guard.setName("Guard");
-	unitDB.setHeavyPikeman(new unit(8, 22, 70, 41, 15, 9, 14.38, 1, 1.67, 5.9));
-	unitDB.HeavyPikeman.setName("Heavy Pikeman");
-	unitDB.setHalberdier(new unit(9, 26, 84, 49, 18, 9, 15.68, 1, 1.88, 7.0));
-	unitDB.Halberdier.setName("Halberdier");
-	unitDB.setBerserker(new unit(10, 30, 49, 114, 42, 8, 15.68, 1, 2.08, 8.2));
-	unitDB.Berserker.setName("Berserker");
-	
-	// Create archer units
-	unitDB.setShortbowman(new unit(1, 1, 8, 6, 3, 8, 10.46, 5, 0.21, 1.0));
-	unitDB.Shortbowman.setName("Shortbowman");
-	unitDB.setLongbowman(new unit(2, 4, 11, 8, 3, 8, 10.46, 5, 0.42, 1.4));
-	unitDB.Longbowman.setName("Longbowman");
-	unitDB.setCrossbowman(new unit(3, 7, 26, 13, 4, 8, 10.46, 8, 0.63, 1.9));
-	unitDB.Crossbowman.setName("Crossbowman");
-	unitDB.setArbalester(new unit(4, 10, 35, 17, 5, 8, 10.46, 8, 0.83, 2.5));
-	unitDB.Arbalester.setName("Arbalester");
-	unitDB.setEliteLongbowman(new unit(5, 13, 25, 19, 6, 8, 13.07, 5, 1.04, 3.2));
-	unitDB.EliteLongbowman.setName("Elite Longbowman");
-	unitDB.setArcherGuard(new unit(6, 16, 32, 24, 8, 8, 13.07, 5, 1.25, 4));
-	unitDB.ArcherGuard.setName("Archer Guard");
-	unitDB.setHeavyCrossbowman(new unit(7, 19, 68, 34, 10, 8, 13.07, 8, 1.46, 4.9));
-	unitDB.HeavyCrossbowman.setName("Heavy Crossbowman");
-	unitDB.setEagleArcher(new unit(8, 22, 47, 35, 11, 8, 14.38, 5, 1.67, 5.9));
-	unitDB.EagleArcher.setName("Eagle Archer");
-	unitDB.setWindlassman(new unit(9, 26, 98, 49, 13, 8, 14.38, 8, 1.88, 7.0));
-	unitDB.Windlassman.setName("Windlassman");
-	unitDB.setMarksman(new unit(10, 30, 65, 49, 15, 8, 15.68, 5, 2.08, 9.2));
-	unitDB.Marksman.setName("Marksman");
-	
-	// Create cavalry units
-	unitDB.setRider(new unit(1, 1, 11, 8, 4, 14, 7.84, 1, 0.21, 1.0));
-	unitDB.Rider.setName("Rider");
-	unitDB.setLightCavalry(new unit(2, 4, 15, 11, 4, 14, 7.84, 1, 0.42, 1.4));
-	unitDB.LightCavalry.setName("Light Cavalry");
-	unitDB.setHeavyCavalry(new unit(3, 7, 20, 15, 6, 14, 9.15, 1, 0.63, 1.9));
-	unitDB.HeavyCavalry.setName("Heavy Cavalry");
-	unitDB.setMountedArcher(new unit(4, 10, 32, 17, 7, 13, 9.15, 4, 0.83, 2.5));
-	unitDB.MountedArcher.setName("Mounted Archer");
-	unitDB.setCavalryShooter(new unit(5, 13, 41, 22, 9, 13, 10.46, 4, 1.04, 3.2));
-	unitDB.CavalryShooter.setName("Cavalry Shooter");
-	unitDB.setKnightsTemplar(new unit(6, 16, 44, 22, 9, 14, 10.46, 1, 1.25, 4.0));
-	unitDB.KnightsTemplar.setName("Knights Templar");
-	unitDB.setHeavyCArcher(new unit(7, 19, 63, 34, 13, 13, 11.76, 4, 1.46, 4.9));
-	unitDB.HeavyCArcher.setName("Heavy Calvary Archer");
-	unitDB.setRoyalKnight(new unit(8, 22, 64, 47, 15, 14, 11.76, 1, 1.67, 5.9));
-	unitDB.RoyalKnight.setName("Royal Knight");
-	unitDB.setStrikeArcher(new unit(9, 26, 91, 49, 18, 13, 13.07, 4, 1.88, 7.0));
-	unitDB.StrikeArcher.setName("Strike Archer");
-	unitDB.setDivineKnight(new unit(10, 30, 90, 65, 21, 14, 13.07, 1, 2.08, 8.2));
-	unitDB.DivineKnight.setName("Divine Knight");
-	
-	// Create siege units
-	unitDB.setBricole(new unit(1, 1, 20, 9, 5, 7, 16.99, 10, 0.21, 1.0));
-	unitDB.Bricole.setName("Bricole");
-	unitDB.setAssaultCart(new unit(2, 4, 9, 14, 8, 5, 26.14, 1, 0.42, 1.4));
-	unitDB.AssaultCart.setName("Assault Cart");
-	unitDB.setMangonel(new unit(3, 7, 38, 17, 7, 7, 18.30, 10, 0.63, 1.9));
-	unitDB.Mangonel.setName("Mangonel");
-	unitDB.setBatteringRam(new unit(4, 10, 17, 25, 13, 5, 27.45, 1, 0.83, 2.5));
-	unitDB.BatteringRam.setName("Battering Ram");
-	unitDB.setHeavyMangonel(new unit(5, 13, 64, 28, 11, 7, 19.61, 10, 1.04, 3.2));
-	unitDB.HeavyMangonel.setName("Heavy Mangonel");
-	unitDB.setDemolisher(new unit(6, 16, 28, 40, 19, 5, 28.75, 1, 1.25, 4.0));
-	unitDB.Demolisher.setName("Demolisher");
-	unitDB.setTrebuchet(new unit(7, 19, 98, 44, 16, 7, 20.91, 10, 1.46, 4.9));
-	unitDB.Trebuchet.setName("Trebuchet");
-	unitDB.setHeavyTrebuchet(new unit(8, 22, 118, 53, 19, 7, 20.91, 10, 1.67, 5.9));
-	unitDB.HeavyTrebuchet.setName("Heavy Trebuchet");
-	unitDB.setSiegeTower(new unit(9, 26, 49, 70, 32, 5, 31.37, 1, 1.88, 7.0));
-	unitDB.SiegeTower.setName("Siege Tower");
-	unitDB.setMightyTrebuchet(new unit(10, 30, 164, 73, 26, 7, 22.22, 10, 2.08, 8.2));
-	unitDB.MightyTrebuchet.setName("Mighty Trebuchet");
-	
-	unitDB.breakdownUnits(unitDB, masterScout, resultsWinbox);
-	
-}
 	
 	private String printTroops(unit unitArr[], int troopLevel, int maxTroopCount, int maxTroopPow, int gatherTroop) {
 		String value;
