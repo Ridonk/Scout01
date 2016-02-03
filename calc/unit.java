@@ -1,5 +1,5 @@
 package calc;
-public class unit {
+public class Unit {
 	public int level;
 	public int casLevel;
 	public int attack;
@@ -13,7 +13,7 @@ public class unit {
 	public String name;
 	public int count;
 	
-	public unit(int level, int casLevel, int attack, int defense, int hp, int speed, double load, int range, double upkeep, double power) {
+	public Unit(int level, int casLevel, int attack, int defense, int hp, int speed, double load, int range, double upkeep, double power) {
 		this.level = level;
 		this.casLevel = casLevel;
 		this.attack = attack;
@@ -24,10 +24,6 @@ public class unit {
 		this.range = range;
 		this.upkeep = upkeep;
 		this.power = power;
-	}
-	
-	public unit() {
-		
 	}
 	
 	public int getCount() {
